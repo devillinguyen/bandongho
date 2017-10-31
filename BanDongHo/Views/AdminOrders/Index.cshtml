@@ -1,0 +1,65 @@
+﻿@model IEnumerable<BanDongHo.Models.Order>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Danh sách các đơn hàng chưa thanh toán</h3>
+
+<table class="table">
+    <tr>
+        <th>
+            <strong>Tên khách hàng</strong>
+        </th>
+        <th>
+            <strong>Điện thoại</strong>
+        </th>
+        <th>
+            <strong>Tổng tiền</strong>
+        </th>
+        <th>
+            <strong>Ngày lập đơn hàng</strong>
+        </th>
+        <th>
+            <strong>Xem chi tiết</strong>
+        </th>
+        <th>
+            <strong>Nghiệp vụ</strong>
+        </th>
+        <th class="text-center">
+            <strong>?</strong>
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Customer.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Customer.PhoneNumber)
+        </td>
+        <td style="background-color: antiquewhite">
+            @string.Format("{0:C0}", @item.Total)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTime)
+        </td>
+        <td>
+            <a href="@Url.Action("Customer", "AdminOrders", new { id = item.Id })"><input type="submit" class="btn btn-warning" value="Khách hàng" /></a>
+            <a href="@Url.Action("OrderDetail", "AdminOrders", new { id = item.CustomerId })"><input type="submit" class="btn btn-success" value="Đơn hàng" /></a>
+        </td>
+        <td>
+            <a href="@Url.Action("Delete", "AdminOrders", new { id = item.Id })"><input type="submit" class="btn btn-danger" value="Xóa" /></a>
+        </td>
+        <td>
+            @using (Html.BeginForm("Checked", "AdminOrders", new { id = item.Id }))
+            {
+                <input type="submit" value="Giao hàng" class="btn btn-info" />
+            }
+        </td>
+    </tr>
+}
+
+</table>

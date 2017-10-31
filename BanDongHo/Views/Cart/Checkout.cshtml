@@ -1,0 +1,160 @@
+﻿@using BanDongHo.Models
+@model BanDongHo.ViewModels.CheckoutViewmodel
+@{
+    ViewBag.Title = "Checkout";
+    Layout = "~/Views/Shared/_ShowroomLayout.cshtml";
+}
+
+<br />
+<h2 style="color: mediumaquamarine">Giỏ hàng của bạn</h2>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <td>
+                <strong>Tên sản phẩm</strong>
+            </td>
+            <td>
+                <strong>Giá sản phẩm</strong>
+            </td>
+            <td>
+                <strong>Ảnh minh họa</strong>
+            </td>
+            <td>
+                <strong>Số lượng</strong>
+            </td>
+            <td>
+                <strong>Tổng</strong>
+            </td>
+        </tr>
+        </thead>
+
+        <tbody>
+        @{
+            double total = 0;
+            List<CartItem> listCart = (List<CartItem>)Session["ShoppingCart"];
+        }
+        @if (listCart != null)
+        {
+            foreach (var item in (List<CartItem>)Session["ShoppingCart"])
+            {
+                <tr>
+                    <td>
+                        @item.Product.Name
+                    </td>
+                    <td>
+                        @item.Product.Price.ToString()
+                    </td>
+                    <td>
+                        <img alt="Image" style="width: 100px; height: 100px;" src="@item.Product.Image" />
+                    </td>
+                    <td class="text-center">
+                        <input type="text" value="@item.Quantity.ToString()" id="Quantity" class="text-center" style="width: 30px;" />&nbsp;
+                        <input type="submit" value="Update" class="btn btn-warning" onclick="UpdateQuantity('@item.Product.Id')" />
+                    </td>
+                    <td>
+                        @{
+                            double value = (double)item.Product.Price * item.Quantity;
+                            total += value;
+                        }
+                        @value
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="5" class="text-right">
+                <strong>Total: @total</strong>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+    <p class="pull-right">
+        <a href="@Url.Action("Index", "Home")"><input type="submit" class="btn" style="background-color: cadetblue; color: aliceblue" value="Tiếp tục mua hàng" /> &nbsp;</a>
+    </p>
+</div>
+
+<br />
+<h2 style="color: mediumaquamarine">Nhập thông tin cá nhân</h2>
+
+@using (Html.BeginForm("Checkout", "Cart"))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4></h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" }) (+84)
+            <div class="col-md-5">
+                @Html.EditorFor(model => model.PhoneNumber, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new {@class = "text-danger"})
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Đặt hàng" class="btn" style="background-color: mediumaquamarine; color: aliceblue" />
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+@*@section Scripts{
+        <script>
+            function UpdateQuantity(ProductId) {
+                var listProduct = $('.Quantity');
+                var cartList = [];
+                $.each(listProduct, function(i, item) {
+                    cartList.push({
+                        Quantity: $(this).val(),
+                        Product: {
+                            ID: $(item).data('id')
+                        }
+                    });
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: '/Cart/UpdateQuantity',
+                    data: { id: JSON.stringify(cartList) },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status == true) {
+                            window.location.href = "/Cart/ListCartItem";
+                        }
+                    }
+                });
+            }
+        </script>
+    }*@

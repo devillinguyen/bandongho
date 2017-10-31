@@ -1,0 +1,44 @@
+﻿@model IEnumerable<BanDongHo.Models.OrderDetail>
+
+@{
+    ViewBag.Title = "OrderDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>OrderDetail</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            <strong>Tên sản phẩm</strong>
+        </th>
+        <th>
+            <strong>Ảnh minh họa</strong>
+        </th>
+        <th>
+            <strong>Đơn giá</strong>
+        </th>
+        <th>
+            <strong>Số lượng</strong>
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Name)
+            </td>
+            <td>
+                <img style="width: 100px; height: 100px;" src="@item.Product.Image"/>
+            </td>
+            <td>
+                @string.Format("{0:C0}", item.Price)
+            </td>
+            <td>
+                @item.Quantity.ToString()
+            </td>
+        </tr>
+    }
+</table>
+<a href="@Url.Action("Index", "AdminOrders")"><input type="submit" class="btn btn-info" value="<< Quay lại" /></a>

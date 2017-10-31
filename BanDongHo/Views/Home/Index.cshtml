@@ -1,0 +1,79 @@
+﻿@model BanDongHo.ViewModels.HomeViewModel
+@{
+    Layout = "~/Views/Shared/_ShowroomLayout.cshtml";
+    ViewBag.Title = "Trang chủ";
+}
+
+<!-- /new_arrivals -->
+<div class="new_arrivals_agile_w3ls_info">
+    <div class="container">
+        <h3 class="wthree_text_info">New <span>Arrivals</span></h3>
+        <div id="horizontalTab">
+            <ul class="resp-tabs-list">
+                <li> Men's</li>
+                <li> Women's</li>
+            </ul>
+            <div class="resp-tabs-container">
+                <!--/tab_one-->
+                <div class="tab1">
+                    @foreach (var product in Model.Products)
+                    {
+                        <div class="col-md-3 product-men">
+                            <div class="men-pro-item simpleCart_shelfItem">
+                                <div class="men-thumb-item">
+                                    <img src="@product.Image" alt="" class="pro-image-front">
+                                    <img src="@product.Image" alt="" class="pro-image-back">
+                                    <div class="men-cart-pro">
+                                        <div class="inner-men-cart-pro">
+                                            <a href="#" class="link-product-add-cart">Chi tiết</a>
+                                        </div>
+                                    </div>
+                                    @if (DateTime.Now.Year == product.Date.Year && (DateTime.Now.Month - product.Date.Month) < 2)
+                                    {
+                                        <span class="product-new-top">New</span>
+                                    }
+                                </div>
+                                <div class="item-info-product ">
+                                    <h4><a href="#">@product.Name</a></h4>
+                                    <div class="info-product-price">
+                                        <span class="item_price">@string.Format("{0:C0}",product.Price)</span>
+                                        <del></del>
+                                    </div>
+                                    <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
+                                        <form action="#" method="post">
+                                            <fieldset>
+                                                <input type="submit" name="submit" value="Thêm vào giỏ" class="button" onclick="AddToCart('@product.Id')" />
+                                            </fieldset>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                                            }
+                    <div class="clearfix"></div>
+                </div>
+                <!--//tab_one-->
+                <!--/tab_two-->
+                <!--//tab_two-->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- //new_arrivals -->
+@section Scripts{
+    <!--Giỏ hàng-->
+    <script>
+        function AddToCart(ProductId) {
+            $.ajax({
+                type: 'POST',
+                url: '/Cart/AddToCart',
+                data: { id: ProductId },
+                success: function(data) {
+                    $("#Cart_Amount").html(data.ItemAmount);
+                }
+            });
+        }
+    </script>
+    <!--//Giỏ hàng-->
+}

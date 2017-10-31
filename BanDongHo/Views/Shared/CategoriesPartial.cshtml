@@ -1,0 +1,10 @@
+﻿<li class="menu__item dropdown">
+    <a class="menu__link" href="#" class="dropdown-toggle" data-toggle="dropdown">Đồng hồ <b class="caret"></b></a>
+    <ul class="dropdown-menu agile_short_dropdown">
+        @foreach (var category in Model)
+        {
+            <li><a href="@Url.Action("ListProduct", "Categories", new { id = category.Id })">@category.Name</a></li>
+        }
+    </ul>
+</li>
+

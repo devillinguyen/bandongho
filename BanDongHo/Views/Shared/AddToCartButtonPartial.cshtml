@@ -1,0 +1,17 @@
+﻿
+@section Scripts{
+    <!--Giỏ hàng-->
+    <script>
+        function AddToCart(ProductId) {
+            $.ajax({
+                type: 'POST',
+                url: '/Cart/AddToCart',
+                data: { id: ProductId },
+                success: function(data) {
+                    $("#Cart_Amount").html(data.ItemAmount);
+                }
+            });
+        }
+    </script>
+    <!--//Giỏ hàng-->
+}

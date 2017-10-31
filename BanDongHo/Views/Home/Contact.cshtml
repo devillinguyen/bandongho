@@ -1,0 +1,36 @@
+﻿@model IEnumerable<BanDongHo.Models.Contact>
+@{
+    ViewBag.Title = "Liên hệ";
+    Layout = "~/Views/Shared/_ShowroomLayout.cshtml";
+}
+@foreach (var item in Model)
+{
+    <div class="col-md-offset-1 col-md-10 col-md-offset-1">
+        <br />
+        <h2 style="color: mediumaquamarine">@ViewBag.Title</h2>
+        <br/>
+        <h3>@item.Title</h3>
+    </div>
+
+    <address class="col-md-offset-1 col-md-10 col-md-offset-1">
+        <br />
+        <abbr style="color: cadetblue">Công ty: </abbr>
+        @item.Company
+    </address>
+
+    <address class="col-md-offset-1 col-md-10 col-md-offset-1">
+        <br />
+        <abbr style="color: cadetblue">Đường dây nóng:</abbr>
+        @item.PhoneNumber
+    </address>
+
+    <address class="col-md-offset-1 col-md-10 col-md-offset-1">
+        <br />
+        <strong style="color: cadetblue">Email Hỗ trợ: </strong> <a href="mailto:Support@example.com">@item.PhoneNumber</a><br />
+    </address>
+    
+    <address class="col-md-offset-1 col-md-10 col-md-offset-1">
+        <br/>
+        <p><strong style="color: cadetblue">Địa chỉ: </strong>@item.Address</p>
+    </address>
+}

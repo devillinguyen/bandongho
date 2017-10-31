@@ -1,0 +1,115 @@
+﻿@using BanDongHo.Models
+
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_ShowroomLayout.cshtml";
+}
+
+<br />
+<h2 style="color: mediumaquamarine">Giỏ hàng của bạn</h2>   
+
+<br/>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <td>
+                <strong>Tên sản phẩm</strong>
+            </td>
+            <td>
+                <strong>Giá sản phẩm</strong>
+            </td>
+            <td>
+                <strong>Ảnh minh họa</strong>
+            </td>
+            <td>
+                <strong>Số lượng</strong>
+            </td>
+            <td>
+                <strong>Tổng</strong>
+            </td>
+            <td>
+                
+            </td>
+        </tr>
+        </thead>
+
+        <tbody>
+        @{
+            double total = 0;
+            List<CartItem> listCart = (List<CartItem>)Session["ShoppingCart"];
+        }
+        @if (listCart != null)
+        {
+            foreach (var item in (List<CartItem>)Session["ShoppingCart"])
+            {
+                <tr>
+                    <td>
+                        @item.Product.Name
+                    </td>
+                    <td>
+                        @string.Format("{0:C0}",item.Product.Price)
+                    </td>
+                    <td>
+                        <img alt="Image" style="width: 100px; height: 100px;" src="@item.Product.Image" />
+                    </td>
+                    <td class="text-center">
+                        <input type="text" value="@item.Quantity" id="Quantity" class="text-center" style="width: 30px;" />&nbsp;
+                        <input type="submit" value="Update" class="btn btn-warning" onclick="UpdateQuantity('@item.Product.Id')" />
+                    </td>
+                    <td>
+                        @{
+                            double value = (double)item.Product.Price * item.Quantity;
+                            total += value;
+                        }
+                        @value
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Delete", "Cart", new { id = item.Product.Id })"><input type="submit" class="btn" style="background-color: maroon; color: aliceblue" value="Bỏ"/></a>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="5" class="text-right">
+                <strong>Total: @total</strong>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+    <p class="pull-right">
+        <a href="@Url.Action("DeleteAll", "Cart")"><input type="submit" class="btn" style="background-color: crimson; color: aliceblue" value="Xóa tất cả"/> &nbsp;</a>
+        <a href="@Url.Action("Index", "Home")"><input type="submit" class="btn" style="background-color: cadetblue; color: aliceblue" value="Tiếp tục mua hàng"/> &nbsp;</a>
+        <a href="@Url.Action("Checkout", "Cart")"><input type="submit" class="btn" style="background-color: mediumaquamarine; color: aliceblue" value="Thanh toán"/></a>
+    </p>
+</div>
+
+@*@section Scripts{
+    <script>
+        function UpdateQuantity(ProductId) {
+            var listProduct = $('.Quantity');
+            var cartList = [];
+            $.each(listProduct, function(i, item) {
+                cartList.push({
+                    Quantity: $(this).val(),
+                    Product: {
+                        ID: $(item).data('id')
+                    }
+                });
+            });
+            $.ajax({
+                type: 'POST',
+                url: '/Cart/UpdateQuantity',
+                data: { id: JSON.stringify(cartList) },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.status == true) {
+                        window.location.href = "/Cart/ListCartItem";
+                    }
+                }
+            });
+        }
+    </script>
+}*@

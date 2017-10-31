@@ -1,0 +1,9 @@
+﻿@model BanDongHo.Models.Product
+@{
+    ViewBag.Title = "Single";
+    Layout = "~/Views/Shared/_ShowroomLayout.cshtml";
+}
+
+<h2>Single</h2>
+@Model.Name
+<img alt="Image" class="img-responsive" src="@Model.Image"/>
