@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using BanDongHo.Models;
 using BanDongHo.ViewModels;
 
-namespace BanDongHo.Controllers.Admin
+namespace BanDongHo.Areas.Admin.Controllers
 {
     public class ProductsController : Controller
     {
